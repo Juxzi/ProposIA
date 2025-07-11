@@ -1,3 +1,0 @@
-# ProposIA
-
-readme
