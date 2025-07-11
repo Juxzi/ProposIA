@@ -1,12 +1,14 @@
 const express = require('express');
-const { Pool } = require('pg');
+const pool = require('./db');
+
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+const templateRoutes = require('./routes/templates');
+const documentRoutes = require('./routes/documents');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgres://user:password@localhost:5432/proposia'
-});
 
 app.use(express.json());
 
@@ -19,6 +21,11 @@ app.get('/', async (req, res) => {
     res.status(500).json({ error: 'Database error' });
   }
 });
+
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/templates', templateRoutes);
+app.use('/documents', documentRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
